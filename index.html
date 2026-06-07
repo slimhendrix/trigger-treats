@@ -36,23 +36,45 @@
     .header {
       width: 100%;
       max-width: 390px;
-      padding: 1.25rem 0 1.5rem;
+      padding: 1.5rem 0 1.75rem;
+      text-align: center;
     }
 
-    .header h1 {
-      font-size: 3.5rem;
+    .logo {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .logo-top {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35em;
+      line-height: 1;
+    }
+
+    .logo-word1 {
+      font-size: 2.4rem;
       font-weight: 800;
       letter-spacing: -0.04em;
-      line-height: 1;
-      color: var(--text);
-      text-align: center;
+      color: #111;
     }
 
-    .header-sub {
-      font-size: 0.95rem;
+    .logo-word2 {
+      font-size: 2.4rem;
+      font-weight: 300;
+      letter-spacing: -0.02em;
       color: #111;
-      margin-top: 0.75rem;
-      text-align: center;
+    }
+
+    .logo-sub {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-top: 0.35rem;
+      padding-left: 0.1em;
     }
 
     /* ── SAVINGS CARD ── */
@@ -145,7 +167,7 @@
       max-width: 390px;
       display: flex;
       justify-content: center;
-      padding: 0 0 2rem;
+      padding: 2rem 0 2rem;
     }
 
     .round-btn {
@@ -192,10 +214,10 @@
       width: 100%;
       max-width: 390px;
       text-align: center;
-      font-size: 0.9rem;
-      color: #111;
+      font-size: 0.75rem;
+      color: #888;
       line-height: 1.5;
-      padding: 1rem 0 0.5rem;
+      padding: 0.75rem 0 0.5rem;
     }
 
     /* ── FOOTER ── */
@@ -236,16 +258,12 @@
 <body>
 
   <div class="header">
-    <h1>Trigger Treats</h1>
-    <p class="header-sub">Do something special with your rage.</p>
-  </div>
-
-  <div class="card">
-    <div class="card-label">Trigger Bucks</div>
-    <div class="card-amount" id="amount">$0</div>
-    <div class="card-sub" id="count">No triggers yet</div>
-    <div class="card-bar">
-      <div class="card-bar-fill" id="bar" style="width:4px"></div>
+    <div class="logo">
+      <div class="logo-top">
+        <span class="logo-word1">Trigger</span>
+        <span class="logo-word2">Treats</span>
+      </div>
+      <div class="logo-sub">Do something special with your rage.</div>
     </div>
   </div>
 
@@ -261,6 +279,15 @@
   </div>
 
   <div class="btn-caption">Give yourself $1 every time somebody makes you mad. Then get yourself a little something. You need a treat.</div>
+
+  <div class="card">
+    <div class="card-label">Trigger Bucks</div>
+    <div class="card-amount" id="amount">$0</div>
+    <div class="card-sub" id="count">No triggers yet</div>
+    <div class="card-bar">
+      <div class="card-bar-fill" id="bar" style="width:4px"></div>
+    </div>
+  </div>
 
   <div class="footer">
     <button class="reset-btn" onclick="resetFund()">Reset fund</button>
