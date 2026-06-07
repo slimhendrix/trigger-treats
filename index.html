@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Trigger Treats</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #111111;
+      --muted: #999999;
+      --accent: #e02020;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: env(safe-area-inset-top, 1.5rem) 1.25rem env(safe-area-inset-bottom, 1.5rem);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      width: 100%;
+      max-width: 390px;
+      padding: 1.25rem 0 1.5rem;
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .header-sub {
+      font-size: 0.95rem;
+      color: #111;
+      margin-top: 0.75rem;
+      text-align: center;
+    }
+
+    /* ── SAVINGS CARD ── */
+    .card {
+      width: 100%;
+      max-width: 390px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-amount {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .card-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .card-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 1.25rem;
+      overflow: hidden;
+    }
+
+    .card-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+      min-width: 4px;
+    }
+
+    /* ── TYPEWRITER BUBBLE ── */
+    .bubble {
+      width: 100%;
+      max-width: 390px;
+      background: #fff;
+      border: none;
+      padding: 0.5rem 0.5rem;
+      margin-bottom: 1.25rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1rem;
+      color: #111;
+      min-height: 3.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .bubble .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: #111;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 0.8s step-end infinite;
+      opacity: 0;
+    }
+
+    .bubble.typing .cursor { opacity: 1; }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ── BUTTON ── */
+    .buttons-row {
+      width: 100%;
+      max-width: 390px;
+      display: flex;
+      justify-content: center;
+      padding: 0 0 2rem;
+    }
+
+    .round-btn {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 8px solid #111;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: background 0.1s, color 0.1s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+    }
+
+    .btn-sub {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-transform: none;
+      line-height: 1.2;
+    }
+
+    .btn-main {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .round-btn:active {
+      background: #333;
+    }
+
+    .btn-caption {
+      width: 100%;
+      max-width: 390px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #111;
+      line-height: 1.5;
+      padding: 1rem 0 0.5rem;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      width: 100%;
+      max-width: 390px;
+      display: flex;
+      justify-content: center;
+      padding-bottom: 0.5rem;
+    }
+
+    .reset-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+    .reset-btn:hover { color: var(--accent); }
+
+    .coin-pop {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.5rem;
+      animation: floatUp 1s ease-out forwards;
+      z-index: 100;
+    }
+
+    @keyframes floatUp {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Trigger Treats</h1>
+    <p class="header-sub">Do something special with your rage.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Trigger Bucks</div>
+    <div class="card-amount" id="amount">$0</div>
+    <div class="card-sub" id="count">No triggers yet</div>
+    <div class="card-bar">
+      <div class="card-bar-fill" id="bar" style="width:4px"></div>
+    </div>
+  </div>
+
+  <div class="bubble" id="bubble">
+    <span id="bubbleText">It's not you. I swear.</span><span class="cursor"></span>
+  </div>
+
+  <div class="buttons-row">
+    <button class="round-btn" id="roundBtn" onclick="handleTrigger(event)">
+      <span class="btn-sub">Press if you are</span>
+      <span class="btn-main">TRIGGERED</span>
+    </button>
+  </div>
+
+  <div class="btn-caption">Give yourself $1 every time somebody makes you mad. Then get yourself a little something. You need a treat.</div>
+
+  <div class="footer">
+    <button class="reset-btn" onclick="resetFund()">Reset fund</button>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────
+    // YOUR RESPONSES — edit these freely
+    // ─────────────────────────────────────────────
+    var RESPONSES = [
+      "There there.",
+      "It's not you.",
+      "People are so dumb. It's stunning when you start to see it.",
+      "There There.",
+      "It's not you. I swear.",
+      "Feel free to throw something.",
+      "They can fuck right off.",
+      "Good lord people are lame.",
+      "At least you're smarter than them.",
+      "Sorry if you got mansplained. The pain is real.",
+      "You said it better. I promise you.",
+      "Everyone needs to just.",
+      "Everything about this says lunch break.",
+"Sorry they're not as smart as you.",
+"Yes, you are right, they're asswipes.",
+"Holy lord people are dumber than dirt.",
+"At least you're better looking.",
+"Pick a different word for lame with every letter of their name.  ",
+"They just shouldn't. ",
+"None of us get it. It's not you.",
+"Try not to slap anyone today.",
+"Picture them late for class.",
+"Hawkeye had it right. Beer on cornflakes.",
+"Try not to go Daisy Duke on their ass.",
+"A Haiku: Lame people won't leave / They're everywhere, man, I swear. / Can they all just go.",
+"A Haiku: If only dummies / Could see what they do to me. / It could be a show.",
+"Try not to make anyone cry today if you can swing it. It's hard though. I know.",
+"A Haiku: May turds find their shoes / And never stop smelling bad / Stinky dumb lamos.",
+"Nope.",
+"Deeply Dumb.",
+"Fuck.",
+"Fucking Fuck.",
+"Fuckin Nope.",
+"Shit Damn.",
+"Nope and nope.",
+"Just no.",
+"Triggered.",
+"They all make me swear.",
+"Nope. Nope."
+    ];
+
+    var ROUND_BUTTON_NAMES = ["Press if you are TRIGGERED"];
+
+    // ─────────────────────────────────────────────
+
+    var total = parseInt(localStorage.getItem('triggered_total') || '0');
+    var count = parseInt(localStorage.getItem('triggered_count') || '0');
+
+    function save() {
+      localStorage.setItem('triggered_total', total);
+      localStorage.setItem('triggered_count', count);
+    }
+
+    function render() {
+      document.getElementById('amount').textContent = '$' + total;
+      document.getElementById('count').textContent =
+        count === 0 ? 'No triggers yet' :
+        count === 1 ? '1 fool, $1 saved' :
+        count + ' fools, $' + total + ' saved';
+      var barPct = Math.min(100, 4 + count * 3);
+      document.getElementById('bar').style.width = barPct + '%';
+    }
+
+    var typeTimer = null;
+    function typeOut(text) {
+      var el = document.getElementById('bubbleText');
+      var bubble = document.getElementById('bubble');
+      bubble.classList.add('typing');
+      el.textContent = '';
+      var i = 0;
+      clearInterval(typeTimer);
+      typeTimer = setInterval(function() {
+        el.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(typeTimer);
+          setTimeout(function() { bubble.classList.remove('typing'); }, 800);
+        }
+      }, 70);
+    }
+
+    function handleTrigger(e) {
+      total += 1;
+      count += 1;
+      save();
+
+      if (RESPONSES.length > 0) {
+        var msg = RESPONSES[Math.floor(Math.random() * RESPONSES.length)];
+        setTimeout(function() { typeOut(msg); }, 2000);
+      }
+
+      var coin = document.createElement('div');
+      coin.className = 'coin-pop';
+      coin.textContent = '💰';
+      var rect = e.currentTarget.getBoundingClientRect();
+      coin.style.left = (rect.left + rect.width / 2 - 12) + 'px';
+      coin.style.top = (rect.top - 10) + 'px';
+      document.body.appendChild(coin);
+      setTimeout(function() { coin.remove(); }, 1100);
+
+      render();
+    }
+
+    function resetFund() {
+      if (!confirm('Reset your treat fund to $0?')) return;
+      total = 0; count = 0;
+      save();
+      clearInterval(typeTimer);
+      document.getElementById('bubbleText').textContent = "It's not you. I swear.";
+      document.getElementById('bubble').classList.remove('typing');
+      render();
+    }
+
+    render();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function() {});
+    }
+  </script>
+</body>
+</html>
