@@ -770,22 +770,10 @@
     }
 
     var CATEGORY_URLS = {
-      beauty: function(amt) {
-        // Sephora gift card — custom amount via URL not supported, link to product page
-        return 'https://www.sephora.com/product/gift-card-P374108';
-      },
-      food: function(amt) {
-        // DoorDash gift card page
-        return 'https://www.doordash.com/gift-cards/';
-      },
-      travel: function(amt) {
-        // Airbnb gift card page
-        return 'https://www.airbnb.com/gift-cards';
-      },
-      shopping: function(amt) {
-        // Target gift card — link to denomination selector
-        return 'https://www.target.com/p/target-giftcard/-/A-13130711';
-      }
+      beauty:   function(amt) { return 'https://www.giftly.com/gift-card/beauty-spa?amount=' + amt; },
+      food:     function(amt) { return 'https://www.giftly.com/gift-card/restaurants?amount=' + amt; },
+      travel:   function(amt) { return 'https://www.giftly.com/gift-card/travel?amount=' + amt; },
+      shopping: function(amt) { return 'https://www.giftly.com/gift-card/shopping?amount=' + amt; }
     };
 
     function getClaimUrl() {
