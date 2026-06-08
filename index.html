@@ -210,7 +210,7 @@
       gap: 0.4rem;
     }
 
-    .threshold-btn {
+    .threshold-btn, .category-btn {
       padding: 0.25rem 0.75rem;
       border: 1px solid var(--border);
       border-radius: 100px;
@@ -223,10 +223,16 @@
       transition: all 0.15s;
     }
 
-    .threshold-btn.active {
+    .threshold-btn.active, .category-btn.active {
       background: var(--text);
       border-color: var(--text);
       color: #fff;
+    }
+
+    .menu-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0.85rem 0;
     }
 
     .menu-backdrop {
@@ -634,6 +640,16 @@
         <button class="threshold-btn" onclick="setThreshold(25)">$25</button>
       </div>
     </div>
+    <hr class="menu-divider">
+    <div class="menu-row">
+      <span class="menu-label">Treat Category</span>
+    </div>
+    <div class="threshold-row" style="margin-top:0.6rem; flex-wrap:wrap;">
+      <button class="category-btn" onclick="setCategory('beauty')">Beauty</button>
+      <button class="category-btn" onclick="setCategory('food')">Food</button>
+      <button class="category-btn" onclick="setCategory('travel')">Travel</button>
+      <button class="category-btn" onclick="setCategory('shopping')">Shopping</button>
+    </div>
   </div>
 
   <!-- Why modal -->
@@ -722,8 +738,9 @@
 
     var total = parseInt(localStorage.getItem('triggered_total') || '0');
     var count = parseInt(localStorage.getItem('triggered_count') || '0');
-    var threshold = parseInt(localStorage.getItem('triggered_threshold') || '0');
+    var threshold  = parseInt(localStorage.getItem('triggered_threshold') || '0');
     var celebrated = parseInt(localStorage.getItem('triggered_celebrated') || '0');
+    var treatCategory = localStorage.getItem('triggered_category') || '';
 
     function save() {
       localStorage.setItem('triggered_total', total);
@@ -752,6 +769,45 @@
       showCelebration();
     }
 
+    var CATEGORY_URLS = {
+      beauty: function(amt) {
+        // Sephora gift card — custom amount via URL not supported, link to product page
+        return 'https://www.sephora.com/product/gift-card-P374108';
+      },
+      food: function(amt) {
+        // DoorDash gift card page
+        return 'https://www.doordash.com/gift-cards/';
+      },
+      travel: function(amt) {
+        // Airbnb gift card page
+        return 'https://www.airbnb.com/gift-cards';
+      },
+      shopping: function(amt) {
+        // Target gift card — link to denomination selector
+        return 'https://www.target.com/p/target-giftcard/-/A-13130711';
+      }
+    };
+
+    function getClaimUrl() {
+      if (treatCategory && CATEGORY_URLS[treatCategory]) {
+        return CATEGORY_URLS[treatCategory](threshold);
+      }
+      return 'https://www.tremendous.com';
+    }
+
+    function setCategory(cat) {
+      treatCategory = cat;
+      localStorage.setItem('triggered_category', cat);
+      renderCategory();
+      closeMenu();
+    }
+
+    function renderCategory() {
+      document.querySelectorAll('.category-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === treatCategory);
+      });
+    }
+
     function showCelebration() {
       var msgs = {
         2:   "You got plenty triggered. You're getting a treat.",
@@ -759,7 +815,7 @@
         25:  "Good job. Yikes that's a lot of fools. Bless."
       };
       document.getElementById('celebrateMsg').textContent = msgs[threshold] || "You hit your goal. Go get your treat.";
-      document.getElementById('claimBtn').href = 'https://www.tremendous.com';
+      document.getElementById('claimBtn').href = getClaimUrl();
       document.getElementById('celebrateOverlay').classList.add('show');
     }
 
@@ -1063,6 +1119,7 @@
 
     render();
     renderThreshold();
+    renderCategory();
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(function() {});
