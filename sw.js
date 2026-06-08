@@ -14,6 +14,23 @@ self.addEventListener('activate', e => {
   );
 });
 
-self.addEventListener('fetch', e =>
-  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)))
-);
+self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+
+  // Network-first for index.html — always get fresh code
+  if (url.pathname === '/' || url.pathname.endsWith('/index.html')) {
+    e.respondWith(
+      fetch(e.request)
+        .then(r => {
+          const copy = r.clone();
+          caches.open(CACHE).then(c => c.put(e.request, copy));
+          return r;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  // Cache-first for everything else (manifest, icons, fonts)
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+});
