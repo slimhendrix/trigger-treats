@@ -770,17 +770,17 @@
     }
 
     var CATEGORY_URLS = {
-      beauty:   function(amt) { return 'https://www.giftly.com/gift-card/beauty-spa?amount=' + amt; },
-      food:     function(amt) { return 'https://www.giftly.com/gift-card/restaurants?amount=' + amt; },
-      travel:   function(amt) { return 'https://www.giftly.com/gift-card/travel?amount=' + amt; },
-      shopping: function(amt) { return 'https://www.giftly.com/gift-card/shopping?amount=' + amt; }
+      beauty:   function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; },
+      food:     function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; },
+      travel:   function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; },
+      shopping: function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; }
     };
 
     function getClaimUrl() {
       if (treatCategory && CATEGORY_URLS[treatCategory]) {
         return CATEGORY_URLS[treatCategory](threshold);
       }
-      return 'https://www.tremendous.com';
+      return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + threshold + '.00';
     }
 
     function setCategory(cat) {
