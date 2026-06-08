@@ -761,6 +761,13 @@
 
     function closeCelebration() {
       document.getElementById('celebrateOverlay').classList.remove('show');
+      total = 0; count = 0; celebrated = 0;
+      localStorage.setItem('triggered_celebrated', 0);
+      save();
+      if (typeTimer) { clearTimeout(typeTimer); typeTimer = null; }
+      document.getElementById('bubbleText').textContent = '';
+      document.getElementById('bubble').classList.remove('typing', 'done');
+      render();
     }
 
     function renderCount() {
