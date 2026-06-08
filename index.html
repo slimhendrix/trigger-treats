@@ -770,7 +770,7 @@
     }
 
     var CATEGORY_URLS = {
-      books:   function(amt) { return 'https://bookshop.org/pages/gift-cards'; },
+      books:   function(amt) { return 'https://bookshop.org/giftcards'; },
       beauty:  function(amt) { return 'https://credobeauty.com/products/gift-card'; },
       travel:  function(amt) { return 'https://www.hipcamp.com/gift-cards'; },
       maker:   function(amt) { return 'https://www.artfinder.com/gift-cards'; }
@@ -780,7 +780,7 @@
       if (treatCategory && CATEGORY_URLS[treatCategory]) {
         return CATEGORY_URLS[treatCategory](threshold);
       }
-      return 'https://bookshop.org/pages/gift-cards';
+      return 'https://bookshop.org/giftcards';
     }
 
     function setCategory(cat) {
