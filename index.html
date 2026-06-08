@@ -470,9 +470,8 @@
           .filter(function(l) { return l.length > 0 && l.toLowerCase() !== 'responses'; });
         RESPONSE_DECK = shuffled(RESPONSES);
       })
-      .catch(function() {
-        RESPONSES = ["It's not you. I swear.", "Nope.", "They just shouldn't."];
-        RESPONSE_DECK = shuffled(RESPONSES);
+      .catch(function(err) {
+        console.error('Could not load responses.txt:', err);
       });
 
     // ─────────────────────────────────────────────
