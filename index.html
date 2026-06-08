@@ -311,6 +311,7 @@
     }
 
     .celebrate-close {
+      display: inline-block;
       background: var(--text);
       color: #fff;
       border: none;
@@ -321,6 +322,7 @@
       font-weight: 700;
       cursor: pointer;
       letter-spacing: 0.04em;
+      text-decoration: none;
     }
 
     /* ── TYPEWRITER BUBBLE ── */
@@ -646,7 +648,8 @@
     <div class="celebrate-emoji">🎉</div>
     <div class="celebrate-title">Treat time.</div>
     <div class="celebrate-msg" id="celebrateMsg"></div>
-    <button class="celebrate-close" onclick="closeCelebration()">GO GET YOUR TREAT</button>
+    <a class="celebrate-close" href="https://www.amazon.com/gift-cards" target="_blank" rel="noopener" onclick="closeCelebration()">CLAIM YOUR TREAT</a>
+    <button class="celebrate-close" style="margin-top:0.75rem; background:none; color:var(--muted); font-size:0.75rem; font-weight:400;" onclick="closeCelebration()">maybe later</button>
   </div>
 
   <script>
