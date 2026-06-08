@@ -546,8 +546,16 @@
 
     // ── TYPEWRITER SOUND ──
     var audioCtx = null;
+    var audioIdleTimer = null;
+
     function getAudioCtx() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      // suspend after 3s of silence
+      clearTimeout(audioIdleTimer);
+      audioIdleTimer = setTimeout(function() {
+        if (audioCtx) audioCtx.suspend();
+      }, 3000);
       return audioCtx;
     }
     function clack() {
