@@ -147,6 +147,85 @@
       min-width: 4px;
     }
 
+    /* ── THRESHOLD SELECTOR ── */
+    .threshold-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.85rem;
+    }
+
+    .threshold-btn {
+      flex: 1;
+      padding: 0.3rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: none;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .threshold-btn.active {
+      background: var(--text);
+      border-color: var(--text);
+      color: #fff;
+    }
+
+    /* ── CELEBRATION MODAL ── */
+    .celebrate-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.92);
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .celebrate-overlay.show {
+      display: flex;
+    }
+
+    .celebrate-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .celebrate-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .celebrate-msg {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 280px;
+      margin-bottom: 2rem;
+    }
+
+    .celebrate-close {
+      background: var(--text);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 0.75rem 2rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+
     /* ── TYPEWRITER BUBBLE ── */
     .bubble {
       width: 100%;
@@ -434,10 +513,23 @@
     <div class="card-bar">
       <div class="card-bar-fill" id="bar" style="width:4px"></div>
     </div>
+    <div class="threshold-row">
+      <button class="threshold-btn" onclick="setThreshold(25)">$25</button>
+      <button class="threshold-btn" onclick="setThreshold(50)">$50</button>
+      <button class="threshold-btn" onclick="setThreshold(75)">$75</button>
+    </div>
   </div>
 
   <div class="footer">
     <p class="tagline" style="margin-top:1.25rem"><button class="reset-btn" id="resetBtn" onclick="resetFund()">RESET COUNTER</button></p>
+  </div>
+
+  <!-- Celebration modal -->
+  <div class="celebrate-overlay" id="celebrateOverlay">
+    <div class="celebrate-emoji">🎉</div>
+    <div class="celebrate-title">Treat time.</div>
+    <div class="celebrate-msg" id="celebrateMsg"></div>
+    <button class="celebrate-close" onclick="closeCelebration()">GO GET YOUR TREAT</button>
   </div>
 
   <script>
@@ -510,10 +602,47 @@
 
     var total = parseInt(localStorage.getItem('triggered_total') || '0');
     var count = parseInt(localStorage.getItem('triggered_count') || '0');
+    var threshold = parseInt(localStorage.getItem('triggered_threshold') || '0');
+    var celebrated = parseInt(localStorage.getItem('triggered_celebrated') || '0');
 
     function save() {
       localStorage.setItem('triggered_total', total);
       localStorage.setItem('triggered_count', count);
+    }
+
+    // ── THRESHOLD ──
+    function setThreshold(val) {
+      threshold = val;
+      localStorage.setItem('triggered_threshold', val);
+      renderThreshold();
+    }
+
+    function renderThreshold() {
+      document.querySelectorAll('.threshold-btn').forEach(function(btn) {
+        btn.classList.toggle('active', parseInt(btn.textContent.replace('$','')) === threshold);
+      });
+    }
+
+    function checkThreshold() {
+      if (!threshold || total < threshold) return;
+      if (celebrated >= threshold) return; // already celebrated this milestone
+      celebrated = threshold;
+      localStorage.setItem('triggered_celebrated', celebrated);
+      showCelebration();
+    }
+
+    function showCelebration() {
+      var msgs = {
+        25:  "You've saved $25 in Trigger Bucks. That's real money. Go get yourself something nice.",
+        50:  "Fifty whole dollars. Earned one frustration at a time. You deserve something good.",
+        75:  "Seventy-five bucks worth of nonsense survived. Go treat yourself. You've earned every penny."
+      };
+      document.getElementById('celebrateMsg').textContent = msgs[threshold] || "You hit your goal. Go get your treat.";
+      document.getElementById('celebrateOverlay').classList.add('show');
+    }
+
+    function closeCelebration() {
+      document.getElementById('celebrateOverlay').classList.remove('show');
     }
 
     function renderCount() {
@@ -521,7 +650,9 @@
         count === 0 ? 'No triggers yet' :
         count === 1 ? '1 fool, $1 saved' :
         count + ' fools, $' + total + ' saved';
-      var barPct = Math.min(100, 4 + count * 3);
+      var barPct = threshold
+        ? Math.min(100, (total / threshold) * 100)
+        : Math.min(100, 4 + count * 3);
       document.getElementById('bar').style.width = barPct + '%';
     }
 
@@ -550,6 +681,7 @@
       card.addEventListener('animationend', function onEnd() {
         card.removeEventListener('animationend', onEnd);
         card.classList.remove('flash');
+        checkThreshold();
       });
     }
 
@@ -768,7 +900,8 @@
       clearTimeout(resetTimeout);
       resetPending = false;
       btn.textContent = 'RESET COUNTER';
-      total = 0; count = 0;
+      total = 0; count = 0; celebrated = 0;
+      localStorage.setItem('triggered_celebrated', 0);
       save();
       if (typeTimer) { clearTimeout(typeTimer); typeTimer = null; }
       document.getElementById('bubbleText').textContent = '';
@@ -777,6 +910,7 @@
     }
 
     render();
+    renderThreshold();
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(function() {});
