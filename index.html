@@ -277,6 +277,39 @@
       margin-bottom: 2rem;
     }
 
+    /* ── WHY MODAL ── */
+    .why-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.95);
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .why-overlay.show { display: flex; }
+
+    .why-title {
+      font-family: 'Futura', 'Century Gothic', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: rgba(224,32,32,0.6);
+      letter-spacing: 0.12em;
+      margin-bottom: 0.75rem;
+    }
+
+    .why-msg {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 280px;
+      margin-bottom: 2rem;
+    }
+
     .celebrate-close {
       background: var(--text);
       color: #fff;
@@ -599,6 +632,16 @@
         <button class="threshold-btn" onclick="setThreshold(75)">$75</button>
       </div>
     </div>
+    <div class="menu-row" style="margin-top:1rem;">
+      <button class="menu-label" style="background:none;border:none;cursor:pointer;padding:0;" onclick="openWhy()">Why</button>
+    </div>
+  </div>
+
+  <!-- Why modal -->
+  <div class="why-overlay" id="whyOverlay" onclick="closeWhy()">
+    <div class="why-title">TRIGGER TREATS</div>
+    <div class="why-msg">Do something special with your rage.</div>
+    <button class="celebrate-close" onclick="closeWhy()">GOT IT</button>
   </div>
 
   <!-- Celebration modal -->
@@ -985,6 +1028,16 @@
       document.getElementById('bubbleText').textContent = '';
       document.getElementById('bubble').classList.remove('typing');
       render();
+    }
+
+    // ── WHY MODAL ──
+    function openWhy() {
+      closeMenu();
+      document.getElementById('whyOverlay').classList.add('show');
+    }
+
+    function closeWhy() {
+      document.getElementById('whyOverlay').classList.remove('show');
     }
 
     // ── HAMBURGER MENU ──
