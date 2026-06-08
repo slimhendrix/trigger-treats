@@ -1,4 +1,4 @@
-const CACHE = 'triggered-v1';
+const CACHE = 'triggered-v3';
 const ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', e =>

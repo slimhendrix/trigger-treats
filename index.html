@@ -9,6 +9,20 @@
   <title>Trigger Treats</title>
   <link rel="manifest" href="manifest.json" />
   <style>
+    @font-face {
+      font-family: 'GingerFont';
+      src: url('gingerfont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'GingerFontBold';
+      src: url('gingerfontbold.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
+  <style>
     :root {
       --bg: #ffffff;
       --surface: #f5f5f5;
@@ -43,38 +57,40 @@
     .logo {
       display: inline-flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
     }
 
     .logo-top {
-      display: flex;
-      align-items: baseline;
-      gap: 0.35em;
       line-height: 1;
     }
 
     .logo-word1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
       color: #111;
+      text-transform: uppercase;
     }
 
     .logo-word2 {
-      font-size: 2.4rem;
-      font-weight: 300;
+      font-size: 2.6rem;
+      font-weight: 900;
       letter-spacing: -0.02em;
       color: #111;
+      text-transform: uppercase;
     }
 
     .logo-sub {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #888;
-      margin-top: 0.35rem;
-      padding-left: 0.1em;
+      color: #111;
+      margin-top: 0.5rem;
+      border-top: 2px solid #111;
+      padding-top: 0.35rem;
+      width: 100%;
+      text-align: center;
     }
 
     /* ── SAVINGS CARD ── */
@@ -98,7 +114,7 @@
     }
 
     .card-amount {
-      font-size: 3.5rem;
+      font-size: 4.5rem;
       font-weight: 800;
       letter-spacing: -0.04em;
       color: var(--text);
@@ -106,7 +122,7 @@
     }
 
     .card-sub {
-      font-size: 0.8rem;
+      font-size: 1rem;
       color: var(--muted);
       margin-top: 0.4rem;
     }
@@ -150,11 +166,14 @@
       background: #111;
       margin-left: 2px;
       vertical-align: text-bottom;
-      animation: blink 0.8s step-end infinite;
       opacity: 0;
     }
 
-    .bubble.typing .cursor { opacity: 1; }
+    .bubble.typing .cursor,
+    .bubble.done .cursor {
+      opacity: 1;
+      animation: blink 0.8s step-end infinite;
+    }
 
     @keyframes blink {
       0%, 100% { opacity: 1; }
@@ -171,43 +190,154 @@
     }
 
     .round-btn {
-      width: 220px;
-      height: 220px;
+      width: 240px;
+      height: 240px;
       border-radius: 50%;
-      border: 8px solid #111;
-      background: #111;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
+      border: none;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
-      transition: background 0.1s, color 0.1s;
+      position: relative;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.15rem;
+      background: conic-gradient(
+        from 120deg,
+        #f0f0f0 0deg, #fff 15deg, #fff 30deg,
+        #b0b0b0 65deg, #606060 110deg, #484848 130deg,
+        #909090 160deg, #fff 190deg, #fff 210deg,
+        #d8d8d8 245deg, #606060 290deg, #f0f0f0 360deg
+      );
+      box-shadow:
+        inset 0 4px 6px rgba(255,255,255,1),
+        inset 0 -4px 6px rgba(0,0,0,0.45);
+      transition: transform 0.08s, box-shadow 0.08s;
+      padding: 18px;
     }
 
-    .btn-sub {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      text-transform: none;
-      line-height: 1.2;
+    /* Glossy black dome */
+    .round-btn::before {
+      content: '';
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 28%,
+        #ffffff  0%,
+        #e8e8e8  5%,
+        #383838 18%,
+        #080808 38%,
+        #000000 60%,
+        #000000 100%
+      );
+      box-shadow:
+        inset 0 16px 48px rgba(0,0,0,0.95),
+        inset 0 -8px 24px rgba(255,255,255,0.1),
+        inset 0 -2px 0   rgba(255,255,255,0.28),
+        0 6px 18px rgba(0,0,0,0.55);
     }
 
+    /* Gloss blob */
+    .round-btn::after {
+      content: '';
+      position: absolute;
+      width: 110px;
+      height: 62px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,1)   0%,
+        rgba(255,255,255,0.7) 25%,
+        rgba(255,255,255,0.2) 60%,
+        rgba(255,255,255,0)   100%
+      );
+      top: 28px;
+      left: 42px;
+      pointer-events: none;
+      z-index: 2;
+      transition: top 0.08s;
+    }
+
+    .round-btn:active,
+    .round-btn.pressed {
+      transform: translateY(4px) scale(0.97);
+      box-shadow:
+        inset 0 2px 3px rgba(255,255,255,0.9),
+        inset 0 -2px 3px rgba(0,0,0,0.3);
+    }
+    .round-btn:active::after,
+    .round-btn.pressed::after { top: 38px; }
+
+    /* Button label */
     .btn-main {
-      font-size: 1.75rem;
+      position: relative;
+      z-index: 3;
+      font-size: 1.6rem;
       font-weight: 800;
       letter-spacing: -0.04em;
       text-transform: uppercase;
-      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 0 14px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,1);
+      pointer-events: none;
+      text-align: center;
+      padding: 0 1rem;
     }
 
-    .round-btn:active {
-      background: #333;
+
+    /* Button wrapper — lets the ring SVG overflow */
+    .btn-wrap {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Circular ring label */
+    .btn-ring-text {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      overflow: visible;
+    }
+    .btn-ring-text text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      font-size: 11.5px;
+      font-weight: 600;
+      fill: #bbb;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── SWEAR STATE on button label ── */
+    .btn-main.swearing {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── CARD PAYOFF FLASH ── */
+    @keyframes cardFlash {
+      0%   { border-color: var(--border); box-shadow: none; }
+      30%  { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.25); }
+      100% { border-color: var(--border); box-shadow: none; }
+    }
+    .card.flash {
+      animation: cardFlash 0.6s ease-out forwards;
+    }
+
+    /* ── AMOUNT ROLLOVER ── */
+    @keyframes rollUp {
+      0%   { opacity: 1; transform: translateY(0); }
+      40%  { opacity: 0; transform: translateY(-0.6em); }
+      41%  { opacity: 0; transform: translateY(0.6em); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .card-amount.rolling {
+      animation: rollUp 0.35s ease-in-out forwards;
     }
 
     .btn-caption {
@@ -225,7 +355,9 @@
       width: 100%;
       max-width: 390px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
       padding-bottom: 0.5rem;
     }
 
@@ -233,52 +365,47 @@
       background: none;
       border: none;
       color: var(--muted);
-      font-size: 0.75rem;
+      font-size: 0.65rem;
+      font-family: inherit;
       cursor: pointer;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
+      padding: 0;
       transition: color 0.2s;
     }
     .reset-btn:hover { color: var(--accent); }
 
-    .coin-pop {
-      position: fixed;
-      pointer-events: none;
-      font-size: 1.5rem;
-      animation: floatUp 1s ease-out forwards;
-      z-index: 100;
+    .tagline {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      padding: 0 1rem;
     }
 
-    @keyframes floatUp {
-      0%   { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
-    }
   </style>
 </head>
 <body>
+  <!-- SVG filter for pencil/hand-drawn text roughness -->
+  <svg style="position:absolute;width:0;height:0" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="pencil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
 
-  <div class="header">
-    <div class="logo">
-      <div class="logo-top">
-        <span class="logo-word1">Trigger</span>
-        <span class="logo-word2">Treats</span>
-      </div>
-      <div class="logo-sub">Do something special with your rage.</div>
+  <div class="buttons-row">
+    <div class="btn-wrap">
+      <button class="round-btn" id="roundBtn" onclick="handleTrigger(event)">
+        <span class="btn-main" id="btnLabel">PRESS HERE</span>
+      </button>
+
     </div>
   </div>
 
   <div class="bubble" id="bubble">
-    <span id="bubbleText">It's not you. I swear.</span><span class="cursor"></span>
+    <span id="bubbleText"></span><span class="cursor"></span>
   </div>
-
-  <div class="buttons-row">
-    <button class="round-btn" id="roundBtn" onclick="handleTrigger(event)">
-      <span class="btn-sub">Press if you are</span>
-      <span class="btn-main">TRIGGERED</span>
-    </button>
-  </div>
-
-  <div class="btn-caption">Give yourself $1 every time somebody makes you mad. Then get yourself a little something. You need a treat.</div>
 
   <div class="card">
     <div class="card-label">Trigger Bucks</div>
@@ -290,56 +417,25 @@
   </div>
 
   <div class="footer">
-    <button class="reset-btn" onclick="resetFund()">Reset fund</button>
+    <p class="tagline">Give yourself $1 every time somebody makes you mad. Then get yourself a little something. You need a treat.</p>
+    <p class="tagline" style="margin-top:1.25rem"><button class="reset-btn" onclick="resetFund()">RESET COUNTER</button></p>
   </div>
 
   <script>
-    // ─────────────────────────────────────────────
-    // YOUR RESPONSES — edit these freely
-    // ─────────────────────────────────────────────
-    var RESPONSES = [
-      "There there.",
-      "It's not you.",
-      "People are so dumb. It's stunning when you start to see it.",
-      "There There.",
-      "It's not you. I swear.",
-      "Feel free to throw something.",
-      "They can fuck right off.",
-      "Good lord people are lame.",
-      "At least you're smarter than them.",
-      "Sorry if you got mansplained. The pain is real.",
-      "You said it better. I promise you.",
-      "Everyone needs to just.",
-      "Everything about this says lunch break.",
-"Sorry they're not as smart as you.",
-"Yes, you are right, they're asswipes.",
-"Holy lord people are dumber than dirt.",
-"At least you're better looking.",
-"Pick a different word for lame with every letter of their name.  ",
-"They just shouldn't. ",
-"None of us get it. It's not you.",
-"Try not to slap anyone today.",
-"Picture them late for class.",
-"Hawkeye had it right. Beer on cornflakes.",
-"Try not to go Daisy Duke on their ass.",
-"A Haiku: Lame people won't leave / They're everywhere, man, I swear. / Can they all just go.",
-"A Haiku: If only dummies / Could see what they do to me. / It could be a show.",
-"Try not to make anyone cry today if you can swing it. It's hard though. I know.",
-"A Haiku: May turds find their shoes / And never stop smelling bad / Stinky dumb lamos.",
-"Nope.",
-"Deeply Dumb.",
-"Fuck.",
-"Fucking Fuck.",
-"Fuckin Nope.",
-"Shit Damn.",
-"Nope and nope.",
-"Just no.",
-"Triggered.",
-"They all make me swear.",
-"Nope. Nope."
-    ];
+// Responses loaded from responses.txt — edit that file to change them
+    var RESPONSES = [];
 
-    var ROUND_BUTTON_NAMES = ["Press if you are TRIGGERED"];
+fetch('responses.txt')
+      .then(function(r) { return r.text(); })
+      .then(function(text) {
+        RESPONSES = text
+          .split('\n')
+          .map(function(l) { return l.replace(/^"|"$/g, '').trim(); })
+          .filter(function(l) { return l.length > 0 && l.toLowerCase() !== 'responses'; });
+      })
+      .catch(function() {
+        RESPONSES = ["It's not you. I swear.", "Nope.", "They just shouldn't."];
+      });
 
     // ─────────────────────────────────────────────
 
@@ -351,8 +447,7 @@
       localStorage.setItem('triggered_count', count);
     }
 
-    function render() {
-      document.getElementById('amount').textContent = '$' + total;
+    function renderCount() {
       document.getElementById('count').textContent =
         count === 0 ? 'No triggers yet' :
         count === 1 ? '1 fool, $1 saved' :
@@ -361,8 +456,87 @@
       document.getElementById('bar').style.width = barPct + '%';
     }
 
+    function render() {
+      document.getElementById('amount').textContent = '$' + total;
+      renderCount();
+    }
+
+    function payoff() {
+      // Roll the amount
+      var amountEl = document.getElementById('amount');
+      var card = document.querySelector('.card');
+      amountEl.classList.remove('rolling');
+      void amountEl.offsetWidth; // reflow to restart animation
+      amountEl.classList.add('rolling');
+      amountEl.addEventListener('animationend', function onEnd() {
+        amountEl.removeEventListener('animationend', onEnd);
+        amountEl.textContent = '$' + total;
+        amountEl.classList.remove('rolling');
+        renderCount();
+      });
+      // Flash the card border
+      card.classList.remove('flash');
+      void card.offsetWidth;
+      card.classList.add('flash');
+      card.addEventListener('animationend', function onEnd() {
+        card.removeEventListener('animationend', onEnd);
+        card.classList.remove('flash');
+      });
+    }
+
+    // ── TYPEWRITER SOUND ──
+    var audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+    function clack() {
+      try {
+        var ctx = getAudioCtx();
+        var now = ctx.currentTime;
+
+        // — Click: bandpass-filtered noise burst (the mechanism snap) —
+        var clickBuf = ctx.createBuffer(1, ctx.sampleRate * 0.05, ctx.sampleRate);
+        var clickData = clickBuf.getChannelData(0);
+        for (var i = 0; i < clickData.length; i++) {
+          clickData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (clickData.length * 0.06));
+        }
+        var clickSrc = ctx.createBufferSource();
+        clickSrc.buffer = clickBuf;
+
+        var bp = ctx.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.value = 1800 + Math.random() * 800;
+        bp.Q.value = 0.7;
+
+        var clickGain = ctx.createGain();
+        clickGain.gain.setValueAtTime(0.55, now);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+        clickSrc.connect(bp);
+        bp.connect(clickGain);
+        clickGain.connect(ctx.destination);
+        clickSrc.start(now);
+
+        // — Thud: short low sine sweep (hammer hitting platen) —
+        var osc = ctx.createOscillator();
+        osc.frequency.setValueAtTime(110 + Math.random() * 40, now);
+        osc.frequency.exponentialRampToValueAtTime(55, now + 0.035);
+
+        var thudGain = ctx.createGain();
+        thudGain.gain.setValueAtTime(0.22, now);
+        thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+
+        osc.connect(thudGain);
+        thudGain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.05);
+
+      } catch(e) {}
+    }
+
     var typeTimer = null;
-    function typeOut(text) {
+    function typeOut(text, onDone) {
       var el = document.getElementById('bubbleText');
       var bubble = document.getElementById('bubble');
       bubble.classList.add('typing');
@@ -371,34 +545,67 @@
       clearInterval(typeTimer);
       typeTimer = setInterval(function() {
         el.textContent += text[i];
+        if (text[i] !== ' ') clack();
         i++;
         if (i >= text.length) {
           clearInterval(typeTimer);
-          setTimeout(function() { bubble.classList.remove('typing'); }, 800);
+          bubble.classList.remove('typing');
+          if (onDone) onDone();
         }
-      }, 70);
+      }, 55);
     }
 
+    // ── SWEAR ──
+    var SWEARS = [
+      '@#$%!', '!*@#$', '#@!%*', '$#@!!',
+      '@!!#$', '!#@$%', '*@#$!', '#$@!*',
+    ];
+
+    var busy = false;
     function handleTrigger(e) {
-      total += 1;
-      count += 1;
-      save();
+      if (busy) return;
+      busy = true;
 
-      if (RESPONSES.length > 0) {
-        var msg = RESPONSES[Math.floor(Math.random() * RESPONSES.length)];
-        setTimeout(function() { typeOut(msg); }, 2000);
-      }
+      var btn   = e.currentTarget;
+      var label = document.getElementById('btnLabel');
 
-      var coin = document.createElement('div');
-      coin.className = 'coin-pop';
-      coin.textContent = '💰';
-      var rect = e.currentTarget.getBoundingClientRect();
-      coin.style.left = (rect.left + rect.width / 2 - 12) + 'px';
-      coin.style.top = (rect.top - 10) + 'px';
-      document.body.appendChild(coin);
-      setTimeout(function() { coin.remove(); }, 1100);
+      // 1. Press animation
+      btn.classList.add('pressed');
+      setTimeout(function() { btn.classList.remove('pressed'); }, 400);
 
-      render();
+      // 2. Swap label to swear (regular Courier, no bold)
+      label.textContent = SWEARS[Math.floor(Math.random() * SWEARS.length)];
+      label.classList.add('swearing');
+
+      // 3. Beat — swear stays on button, then fire typewriter (swear remains)
+      setTimeout(function() {
+        total += 1;
+        count += 1;
+        save();
+
+        var msg = RESPONSES.length > 0
+          ? RESPONSES[Math.floor(Math.random() * RESPONSES.length)]
+          : null;
+
+        function finish() {
+          // payoff (card flash + balance roll)
+          payoff();
+
+          // keep cursor blinking for 5 cycles (5 × 800ms)
+          var bubble = document.getElementById('bubble');
+          bubble.classList.add('done');
+          setTimeout(function() {
+            bubble.classList.remove('done');
+            busy = false;
+          }, 5 * 800);
+        }
+
+        if (msg) {
+          typeOut(msg, finish);
+        } else {
+          finish();
+        }
+      }, 750);
     }
 
     function resetFund() {
@@ -406,7 +613,7 @@
       total = 0; count = 0;
       save();
       clearInterval(typeTimer);
-      document.getElementById('bubbleText').textContent = "It's not you. I swear.";
+      document.getElementById('bubbleText').textContent = '';
       document.getElementById('bubble').classList.remove('typing');
       render();
     }
