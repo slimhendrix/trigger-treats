@@ -147,18 +147,72 @@
       min-width: 4px;
     }
 
-    /* ── THRESHOLD SELECTOR ── */
+    /* ── HAMBURGER ── */
+    .hamburger-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 200;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .hamburger-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    /* ── SLIDE-DOWN MENU ── */
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 150;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 1.5rem 1.25rem;
+      transform: translateY(-100%);
+      transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .menu-panel.open {
+      transform: translateY(0);
+    }
+
+    .menu-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .menu-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
     .threshold-row {
       display: flex;
-      gap: 0.5rem;
-      margin-top: 0.85rem;
+      gap: 0.4rem;
     }
 
     .threshold-btn {
-      flex: 1;
-      padding: 0.3rem 0;
+      padding: 0.25rem 0.75rem;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 100px;
       background: none;
       font-family: inherit;
       font-size: 0.82rem;
@@ -173,6 +227,15 @@
       border-color: var(--text);
       color: #fff;
     }
+
+    .menu-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 140;
+    }
+
+    .menu-backdrop.open { display: block; }
 
     /* ── CELEBRATION MODAL ── */
     .celebrate-overlay {
@@ -513,15 +576,28 @@
     <div class="card-bar">
       <div class="card-bar-fill" id="bar" style="width:4px"></div>
     </div>
-    <div class="threshold-row">
-      <button class="threshold-btn" onclick="setThreshold(25)">$25</button>
-      <button class="threshold-btn" onclick="setThreshold(50)">$50</button>
-      <button class="threshold-btn" onclick="setThreshold(75)">$75</button>
-    </div>
   </div>
 
   <div class="footer">
     <p class="tagline" style="margin-top:1.25rem"><button class="reset-btn" id="resetBtn" onclick="resetFund()">RESET COUNTER</button></p>
+  </div>
+
+  <!-- Hamburger -->
+  <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Slide-down menu -->
+  <div class="menu-backdrop" id="menuBackdrop" onclick="closeMenu()"></div>
+  <div class="menu-panel" id="menuPanel">
+    <div class="menu-row">
+      <span class="menu-label">Treat Trigger</span>
+      <div class="threshold-row">
+        <button class="threshold-btn" onclick="setThreshold(25)">$25</button>
+        <button class="threshold-btn" onclick="setThreshold(50)">$50</button>
+        <button class="threshold-btn" onclick="setThreshold(75)">$75</button>
+      </div>
+    </div>
   </div>
 
   <!-- Celebration modal -->
@@ -615,6 +691,7 @@
       threshold = val;
       localStorage.setItem('triggered_threshold', val);
       renderThreshold();
+      closeMenu();
     }
 
     function renderThreshold() {
@@ -907,6 +984,19 @@
       document.getElementById('bubbleText').textContent = '';
       document.getElementById('bubble').classList.remove('typing');
       render();
+    }
+
+    // ── HAMBURGER MENU ──
+    function toggleMenu() {
+      var panel = document.getElementById('menuPanel');
+      var backdrop = document.getElementById('menuBackdrop');
+      var open = panel.classList.toggle('open');
+      backdrop.classList.toggle('open', open);
+    }
+
+    function closeMenu() {
+      document.getElementById('menuPanel').classList.remove('open');
+      document.getElementById('menuBackdrop').classList.remove('open');
     }
 
     render();
