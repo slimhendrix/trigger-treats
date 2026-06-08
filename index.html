@@ -8,18 +8,22 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Trigger Treats</title>
   <link rel="manifest" href="manifest.json" />
+  <link rel="preload" href="gingerfont.ttf" as="font" type="font/truetype" crossorigin>
+  <link rel="preload" href="gingerfontbold.ttf" as="font" type="font/truetype" crossorigin>
   <style>
     @font-face {
       font-family: 'GingerFont';
       src: url('gingerfont.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
+      font-display: block;
     }
     @font-face {
       font-family: 'GingerFontBold';
       src: url('gingerfontbold.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
+      font-display: block;
     }
   </style>
   <style>
@@ -100,21 +104,21 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-bottom: 1rem;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.75rem;
     }
 
     .card-label {
-      font-size: 0.7rem;
+      font-size: 0.58rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--muted);
       font-weight: 600;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
 
     .card-amount {
-      font-size: 4.5rem;
+      font-size: 1.55rem;
       font-weight: 800;
       letter-spacing: -0.04em;
       color: var(--text);
@@ -122,16 +126,16 @@
     }
 
     .card-sub {
-      font-size: 1rem;
+      font-size: 0.72rem;
       color: var(--muted);
-      margin-top: 0.4rem;
+      margin-top: 0.25rem;
     }
 
     .card-bar {
-      height: 3px;
+      height: 2px;
       background: var(--border);
       border-radius: 2px;
-      margin-top: 1.25rem;
+      margin-top: 0.75rem;
       overflow: hidden;
     }
 
@@ -152,7 +156,7 @@
       padding: 0.5rem 0.5rem;
       margin-bottom: 1.25rem;
       font-family: 'Courier New', Courier, monospace;
-      font-size: 1rem;
+      font-size: 1.25rem;
       color: #111;
       min-height: 3.5rem;
       display: flex;
@@ -186,12 +190,12 @@
       max-width: 390px;
       display: flex;
       justify-content: center;
-      padding: 2rem 0 2rem;
+      padding: 1rem 0 0.5rem;
     }
 
     .round-btn {
-      width: 240px;
-      height: 240px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
       border: none;
       cursor: pointer;
@@ -209,17 +213,17 @@
         #d8d8d8 245deg, #606060 290deg, #f0f0f0 360deg
       );
       box-shadow:
-        inset 0 4px 6px rgba(255,255,255,1),
-        inset 0 -4px 6px rgba(0,0,0,0.45);
+        inset 0 3px 5px rgba(255,255,255,1),
+        inset 0 -3px 5px rgba(0,0,0,0.45);
       transition: transform 0.08s, box-shadow 0.08s;
-      padding: 18px;
+      padding: 14px;
     }
 
     /* Glossy black dome */
     .round-btn::before {
       content: '';
       position: absolute;
-      inset: 18px;
+      inset: 14px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 28%,
         #ffffff  0%,
@@ -230,18 +234,18 @@
         #000000 100%
       );
       box-shadow:
-        inset 0 16px 48px rgba(0,0,0,0.95),
-        inset 0 -8px 24px rgba(255,255,255,0.1),
+        inset 0 12px 36px rgba(0,0,0,0.95),
+        inset 0 -6px 18px rgba(255,255,255,0.1),
         inset 0 -2px 0   rgba(255,255,255,0.28),
-        0 6px 18px rgba(0,0,0,0.55);
+        0 5px 14px rgba(0,0,0,0.55);
     }
 
     /* Gloss blob */
     .round-btn::after {
       content: '';
       position: absolute;
-      width: 110px;
-      height: 62px;
+      width: 82px;
+      height: 46px;
       border-radius: 50%;
       background: radial-gradient(ellipse,
         rgba(255,255,255,1)   0%,
@@ -249,8 +253,8 @@
         rgba(255,255,255,0.2) 60%,
         rgba(255,255,255,0)   100%
       );
-      top: 28px;
-      left: 42px;
+      top: 21px;
+      left: 31px;
       pointer-events: none;
       z-index: 2;
       transition: top 0.08s;
@@ -264,15 +268,16 @@
         inset 0 -2px 3px rgba(0,0,0,0.3);
     }
     .round-btn:active::after,
-    .round-btn.pressed::after { top: 38px; }
+    .round-btn.pressed::after { top: 29px; }
 
     /* Button label */
     .btn-main {
       position: relative;
       z-index: 3;
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
+      font-family: 'GingerFontBold';
+      font-size: 2.4rem;
+      font-weight: normal;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
       color: #fff;
       text-shadow: 0 0 14px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,1);
@@ -285,8 +290,8 @@
     /* Button wrapper — lets the ring SVG overflow */
     .btn-wrap {
       position: relative;
-      width: 240px;
-      height: 240px;
+      width: 180px;
+      height: 180px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -295,8 +300,8 @@
     /* Circular ring label */
     .btn-ring-text {
       position: absolute;
-      width: 320px;
-      height: 320px;
+      width: 240px;
+      height: 240px;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -315,6 +320,7 @@
     /* ── SWEAR STATE on button label ── */
     .btn-main.swearing {
       font-family: 'Courier New', Courier, monospace;
+      font-size: 1.6rem;
       font-weight: 400;
       letter-spacing: 0.02em;
     }
@@ -377,7 +383,7 @@
       font-size: 0.82rem;
       color: var(--muted);
       text-align: center;
-      line-height: 1.6;
+      line-height: 1.2;
       padding: 0 1rem;
     }
 
@@ -394,10 +400,15 @@
     </defs>
   </svg>
 
+  <div class="footer" style="padding-top:1rem; padding-bottom:0;">
+    <p class="tagline" style="font-family:'Futura','Century Gothic',sans-serif; font-weight:700; color:rgba(224,32,32,0.6); font-size:1.55rem; letter-spacing:0.28em; margin-bottom:0;">TRIGGER TREATS</p>
+    <p class="tagline" style="margin-top:0.07rem; margin-bottom:0.5rem;">Give yourself $1 every time somebody makes you mad. Then get yourself a little something. You need a treat.</p>
+  </div>
+
   <div class="buttons-row">
     <div class="btn-wrap">
       <button class="round-btn" id="roundBtn" onclick="handleTrigger(event)">
-        <span class="btn-main" id="btnLabel">PRESS HERE</span>
+        <span class="btn-main" id="btnLabel">PRESS<br>HERE</span>
       </button>
 
     </div>
@@ -417,24 +428,40 @@
   </div>
 
   <div class="footer">
-    <p class="tagline">Give yourself $1 every time somebody makes you mad. Then get yourself a little something. You need a treat.</p>
     <p class="tagline" style="margin-top:1.25rem"><button class="reset-btn" onclick="resetFund()">RESET COUNTER</button></p>
   </div>
 
   <script>
 // Responses loaded from responses.txt — edit that file to change them
     var RESPONSES = [];
+    var RESPONSE_DECK = [];
 
-fetch('responses.txt')
+    function shuffled(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+      }
+      return a;
+    }
+
+    function nextResponse() {
+      if (RESPONSE_DECK.length === 0) RESPONSE_DECK = shuffled(RESPONSES);
+      return RESPONSE_DECK.pop();
+    }
+
+    fetch('responses.txt')
       .then(function(r) { return r.text(); })
       .then(function(text) {
         RESPONSES = text
           .split('\n')
           .map(function(l) { return l.replace(/^"|"$/g, '').trim(); })
           .filter(function(l) { return l.length > 0 && l.toLowerCase() !== 'responses'; });
+        RESPONSE_DECK = shuffled(RESPONSES);
       })
       .catch(function() {
         RESPONSES = ["It's not you. I swear.", "Nope.", "They just shouldn't."];
+        RESPONSE_DECK = shuffled(RESPONSES);
       });
 
     // ─────────────────────────────────────────────
@@ -610,10 +637,19 @@ fetch('responses.txt')
     }
 
     // ── SWEAR ──
-    var SWEARS = [
-      '@#$%!', '!*@#$', '#@!%*', '$#@!!',
-      '@!!#$', '!#@$%', '*@#$!', '#$@!*',
-    ];
+    var GRAWLIX_CHARS = ['@', '#', '$', '%', '&', '*', '!'];
+    function randomGrawlix() {
+      var len = 4 + Math.floor(Math.random() * 3); // 4–6 chars
+      var result = '';
+      for (var i = 0; i < len; i++) {
+        result += GRAWLIX_CHARS[Math.floor(Math.random() * GRAWLIX_CHARS.length)];
+      }
+      if (result.indexOf('!') === -1) {
+        var pos = Math.floor(Math.random() * len);
+        result = result.substring(0, pos) + '!' + result.substring(pos + 1);
+      }
+      return result;
+    }
 
     var busy = false;
     function handleTrigger(e) {
@@ -628,7 +664,7 @@ fetch('responses.txt')
       setTimeout(function() { btn.classList.remove('pressed'); }, 400);
 
       // 2. Swap label to swear (regular Courier, no bold)
-      label.textContent = SWEARS[Math.floor(Math.random() * SWEARS.length)];
+      label.textContent = randomGrawlix();
       label.classList.add('swearing');
 
       // 3. Beat — swear stays on button, then fire typewriter (swear remains)
@@ -637,9 +673,7 @@ fetch('responses.txt')
         count += 1;
         save();
 
-        var msg = RESPONSES.length > 0
-          ? RESPONSES[Math.floor(Math.random() * RESPONSES.length)]
-          : null;
+        var msg = RESPONSES.length > 0 ? nextResponse() : null;
 
         function finish() {
           // payoff (card flash + balance roll)
@@ -650,6 +684,8 @@ fetch('responses.txt')
           bubble.classList.add('done');
           setTimeout(function() {
             bubble.classList.remove('done');
+            label.innerHTML = 'PRESS<br>HERE';
+            label.classList.remove('swearing');
             busy = false;
           }, 5 * 800);
         }
