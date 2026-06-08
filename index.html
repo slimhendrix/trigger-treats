@@ -428,7 +428,7 @@
   </div>
 
   <div class="footer">
-    <p class="tagline" style="margin-top:1.25rem"><button class="reset-btn" onclick="resetFund()">RESET COUNTER</button></p>
+    <p class="tagline" style="margin-top:1.25rem"><button class="reset-btn" id="resetBtn" onclick="resetFund()">RESET COUNTER</button></p>
   </div>
 
   <script>
@@ -739,8 +739,23 @@
       }, 750);
     }
 
+    var resetPending = false;
+    var resetTimeout = null;
+
     function resetFund() {
-      if (!confirm('Reset your treat fund to $0?')) return;
+      var btn = document.getElementById('resetBtn');
+      if (!resetPending) {
+        resetPending = true;
+        btn.textContent = 'You for sure?';
+        resetTimeout = setTimeout(function() {
+          resetPending = false;
+          btn.textContent = 'RESET COUNTER';
+        }, 3000);
+        return;
+      }
+      clearTimeout(resetTimeout);
+      resetPending = false;
+      btn.textContent = 'RESET COUNTER';
       total = 0; count = 0;
       save();
       if (typeTimer) { clearTimeout(typeTimer); typeTimer = null; }
