@@ -645,10 +645,10 @@
       <span class="menu-label">Treat Category</span>
     </div>
     <div class="threshold-row" style="margin-top:0.6rem; flex-wrap:wrap;">
+      <button class="category-btn" onclick="setCategory('books')">Books</button>
       <button class="category-btn" onclick="setCategory('beauty')">Beauty</button>
-      <button class="category-btn" onclick="setCategory('food')">Food</button>
       <button class="category-btn" onclick="setCategory('travel')">Travel</button>
-      <button class="category-btn" onclick="setCategory('shopping')">Shopping</button>
+      <button class="category-btn" onclick="setCategory('maker')">Maker</button>
     </div>
   </div>
 
@@ -770,17 +770,17 @@
     }
 
     var CATEGORY_URLS = {
-      beauty:   function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; },
-      food:     function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; },
-      travel:   function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; },
-      shopping: function(amt) { return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + amt + '.00'; }
+      books:   function(amt) { return 'https://bookshop.org/gift-cards'; },
+      beauty:  function(amt) { return 'https://credobeauty.com/products/gift-card'; },
+      travel:  function(amt) { return 'https://www.hipcamp.com/gift-cards'; },
+      maker:   function(amt) { return 'https://www.artfinder.com/gift-cards'; }
     };
 
     function getClaimUrl() {
       if (treatCategory && CATEGORY_URLS[treatCategory]) {
         return CATEGORY_URLS[treatCategory](threshold);
       }
-      return 'https://www.amazon.com/dp/B004LLIKVU?denomination=' + threshold + '.00';
+      return 'https://bookshop.org/gift-cards';
     }
 
     function setCategory(cat) {
