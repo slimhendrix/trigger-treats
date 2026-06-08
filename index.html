@@ -627,9 +627,9 @@
     <div class="menu-row">
       <span class="menu-label">Set your Treat Trigger</span>
       <div class="threshold-row">
+        <button class="threshold-btn" onclick="setThreshold(5)">$5</button>
         <button class="threshold-btn" onclick="setThreshold(25)">$25</button>
         <button class="threshold-btn" onclick="setThreshold(50)">$50</button>
-        <button class="threshold-btn" onclick="setThreshold(75)">$75</button>
       </div>
     </div>
   </div>
@@ -751,9 +751,9 @@
 
     function showCelebration() {
       var msgs = {
+        5:   "Five bucks of pure frustration. Go get yourself something small and good.",
         25:  "You've saved $25 in Trigger Bucks. That's real money. Go get yourself something nice.",
-        50:  "Fifty whole dollars. Earned one frustration at a time. You deserve something good.",
-        75:  "Seventy-five bucks worth of nonsense survived. Go treat yourself. You've earned every penny."
+        50:  "Fifty whole dollars. Earned one frustration at a time. You deserve something good."
       };
       document.getElementById('celebrateMsg').textContent = msgs[threshold] || "You hit your goal. Go get your treat.";
       document.getElementById('celebrateOverlay').classList.add('show');
