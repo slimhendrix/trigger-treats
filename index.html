@@ -432,8 +432,43 @@
   </div>
 
   <script>
-// Responses loaded from responses.txt — edit that file to change them
-    var RESPONSES = [];
+    var RESPONSES = [
+      "There There. Sorry everyone's dumber than you.",
+      "People are so dumb. I swear.",
+      "Feel free to throw something.",
+      "They can fuck right off.",
+      "Good lord people are lame.",
+      "At least you're smarter than them.",
+      "Sorry if you got mansplained. The pain is real.",
+      "You said it better. I promise you.",
+      "Everyone needs to just.",
+      "Everything about this says time to go to a yoga retreat but just skip the yoga.",
+      "Sorry they're not as smart as you.",
+      "Yes, you are right, they're asswipes.",
+      "Holy lord people are dumber than dirt.",
+      "At least you're better looking.",
+      "Pick a different word for lame with every letter of their name.",
+      "They just shouldn't.",
+      "None of us get it. It's not you.",
+      "Try not to slap anyone today.",
+      "Picture them late for class.",
+      "Hawkeye had it right. Beer on cornflakes",
+      "Try not to go Daisy Duke on their ass.",
+      "A Haiku: Lame people won't leave / They're everywhere, man, I swear. / Can they all just go.",
+      "A Haiku: If only dummies / Could see what they do to me. / It could be a show.",
+      "Try not to make anyone cry today if you can swing it. It's hard though. I know.",
+      "A Haiku: May turds find their shoes / And never stop smelling bad / Stinky dumb lamos.",
+      "No words. Just the shaking of my head with you.",
+      "How do they have their jobs. It is very unclear to us at this time.",
+      "If only we were in charge of all the things.",
+      "This is why people just ditch it all and go to Tibet.",
+      "Someone put all the stupid people into a breakout room that I do not have permissions to enter.",
+      "Press 1 if you want people to just go the fuck away.",
+      "Jesus take everyone else's wheel.",
+      "Everyone needs to hush for a day, please. Just all ya'll: hush.",
+      "A Haiku: Dumb people near me / Oh that's not a good idea / I should be in charge."
+    ];
+
     var RESPONSE_DECK = [];
 
     function shuffled(arr) {
@@ -449,7 +484,6 @@
     function nextResponse() {
       if (RESPONSE_DECK.length === 0) {
         RESPONSE_DECK = shuffled(RESPONSES);
-        // make sure the new deck doesn't open with the same response we just showed
         if (RESPONSE_DECK.length > 1 && RESPONSE_DECK[RESPONSE_DECK.length - 1] === lastResponse) {
           var swap = Math.floor(Math.random() * (RESPONSE_DECK.length - 1));
           var tmp = RESPONSE_DECK[swap];
@@ -461,18 +495,7 @@
       return lastResponse;
     }
 
-    fetch('responses.txt')
-      .then(function(r) { return r.text(); })
-      .then(function(text) {
-        RESPONSES = text
-          .split('\n')
-          .map(function(l) { return l.replace(/^"|"$/g, '').trim(); })
-          .filter(function(l) { return l.length > 0 && l.toLowerCase() !== 'responses'; });
-        RESPONSE_DECK = shuffled(RESPONSES);
-      })
-      .catch(function(err) {
-        console.error('Could not load responses.txt:', err);
-      });
+    RESPONSE_DECK = shuffled(RESPONSES);
 
     // ─────────────────────────────────────────────
 
