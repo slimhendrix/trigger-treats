@@ -445,9 +445,20 @@
       return a;
     }
 
+    var lastResponse = null;
     function nextResponse() {
-      if (RESPONSE_DECK.length === 0) RESPONSE_DECK = shuffled(RESPONSES);
-      return RESPONSE_DECK.pop();
+      if (RESPONSE_DECK.length === 0) {
+        RESPONSE_DECK = shuffled(RESPONSES);
+        // make sure the new deck doesn't open with the same response we just showed
+        if (RESPONSE_DECK.length > 1 && RESPONSE_DECK[RESPONSE_DECK.length - 1] === lastResponse) {
+          var swap = Math.floor(Math.random() * (RESPONSE_DECK.length - 1));
+          var tmp = RESPONSE_DECK[swap];
+          RESPONSE_DECK[swap] = RESPONSE_DECK[RESPONSE_DECK.length - 1];
+          RESPONSE_DECK[RESPONSE_DECK.length - 1] = tmp;
+        }
+      }
+      lastResponse = RESPONSE_DECK.pop();
+      return lastResponse;
     }
 
     fetch('responses.txt')
