@@ -317,6 +317,15 @@
       text-transform: uppercase;
     }
 
+    /* ── FADE IN on reset ── */
+    @keyframes fadeInLabel {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .btn-main.fading-in {
+      animation: fadeInLabel 0.8s ease-out forwards;
+    }
+
     /* ── SWEAR STATE on button label ── */
     .btn-main.swearing {
       font-family: 'Courier New', Courier, monospace;
@@ -727,6 +736,9 @@
             bubble.classList.remove('done');
             label.innerHTML = 'PRESS<br>HERE';
             label.classList.remove('swearing');
+            label.classList.remove('fading-in');
+            void label.offsetWidth; // reflow to restart animation
+            label.classList.add('fading-in');
             busy = false;
           }, 5 * 800);
         }
